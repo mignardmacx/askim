@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Barışalım mı?</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: pink;
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .decor {
+      position: absolute;
+      width: 50px;
+      height: 50px;
+      background-size: cover;
+      z-index: 0;
+      animation: float 6s infinite ease-in-out;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-20px); }
+    }
+
+    .container {
+      text-align: center;
+      z-index: 1;
+    }
+
+    h1 {
+      font-size: 3rem;
+      color: #d6005f;
+      margin-bottom: 40px;
+    }
+
+    .buttons {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      position: relative;
+    }
+
+    button {
+      font-size: 1.5rem;
+      padding: 15px 30px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: absolute;
+    }
+
+    #yesBtn {
+      background-color: #4CAF50;
+      color: white;
+      position: static;
+    }
+
+    #noBtn {
+      background-color: #f44336;
+      color: white;
+    }
+
+    #finalMessage {
+      display: none;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      z-index: 10;
+    }
+
+    #finalMessage .heart {
+      font-size: 100px;
+      color: red;
+    }
+
+    #finalMessage p {
+      font-size: 2rem;
+      color: #d6005f;
+    }
+  </style>
+</head>
+<body>
+  <div class="container" id="mainContainer">
+    <h1>Barışalım mı?</h1>
+    <div class="buttons">
+      <button id="yesBtn">Evet</button>
+      <button id="noBtn">Hayır</button>
+    </div>
+  </div>
+
+  <div id="finalMessage">
+    <div class="heart">❤️</div>
+    <p>Seni çok seviyorum, lütfen barışalım.</p>
+  </div>
+
+  <script>
+    const heartImg = 'https://emojicdn.elk.sh/❤️';
+    const bearImg = 'https://emojicdn.elk.sh/🧸';
+
+    // Dekor kalpler ve ayıcıklar
+    for (let i = 0; i < 30; i++) {
+      const img = document.createElement('div');
+      img.className = 'decor';
+      img.style.left = Math.random() * 100 + '%';
+      img.style.top = Math.random() * 100 + '%';
+      img.style.backgroundImage = `url('${Math.random() < 0.5 ? heartImg : bearImg}')`;
+      document.body.appendChild(img);
+    }
+
+    let yesBtn = document.getElementById("yesBtn");
+    let noBtn = document.getElementById("noBtn");
+
+    let size = 1;
+
+    function moveNoButton() {
+      const maxX = window.innerWidth - noBtn.offsetWidth;
+      const maxY = window.innerHeight - noBtn.offsetHeight;
+      const randomX = Math.floor(Math.random() * maxX);
+      const randomY = Math.floor(Math.random() * maxY);
+
+      noBtn.style.left = `${randomX}px`;
+      noBtn.style.top = `${randomY}px`;
+
+      // Her tıklamada evet butonunu büyüt
+      size += 0.3;
+      yesBtn.style.transform = `scale(${size})`;
+
+      // Kaçamayacak kadar büyürse zaten tıklayacak
+      if (size > 4) {
+        yesBtn.click();
+      }
+    }
+
+    noBtn.addEventListener("mouseenter", moveNoButton);
+    noBtn.addEventListener("click", moveNoButton); // Hile yapan olursa yakalanır
+
+    yesBtn.addEventListener("click", () => {
+      document.getElementById("mainContainer").style.display = "none";
+      document.getElementById("finalMessage").style.display = "block";
+    });
+  </script>
+</body>
+</html>
